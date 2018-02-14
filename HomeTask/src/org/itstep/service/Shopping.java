@@ -79,16 +79,35 @@ public class Shopping {
 			  loginLink = loginLink.contains(BASE_URL) ? loginLink : BASE_URL+loginLink;
 			  
 			  driver.get(loginLink);
-			  Timer.waitSeconds(25);
+			  Timer.waitSeconds(10);
+			  
+			  if (driver.getPageSource().contains("ap_password")) {
 			  
 			  WebElement emailElement = driver.findElement(By.id("ap_email"));
 			  WebElement passwordElement = driver.findElement(By.id("ap_password"));
 			  WebElement submitElement = driver.findElement(By.id("signInSubmit"));
 			  
 			  emailElement.sendKeys(account.getLogin());
-			  passwordElement.sendKeys(account.getPassword());
+			  passwordElement.sendKeys(account.getPassword());			  
+			  submitElement.submit();	
 			  
-			  submitElement.submit();			  
+			  }
+			  else {
+				  WebElement emailElement = driver.findElement(By.id("ap_email"));
+				  WebElement submitElement1 = driver.findElement(By.id("continue"));
+				  
+				  emailElement.sendKeys(account.getLogin());				  			  
+				  submitElement1.submit();
+				  Timer.waitSeconds(5);
+				  
+				  WebElement passwordElement = driver.findElement(By.id("ap_password"));
+				  WebElement submitElement2 = driver.findElement(By.id("signInSubmit"));
+				  
+				  passwordElement.sendKeys(account.getPassword());			  
+				  submitElement2.submit();	
+				  
+			  }
+			  
 			  Timer.waitSeconds(5);
 			  
 			  String currentPage = driver.getCurrentUrl();
@@ -103,7 +122,7 @@ public class Shopping {
 			  searchInput.clear();			  
 			  Timer.waitSeconds(5);
 			  searchInput.sendKeys(itemAsin);
-			  Timer.waitSeconds(15);
+			  Timer.waitSeconds(10);
 			  
 			  WebElement searchBox = driver.findElement(By.id("nav-search"));
 			  List<WebElement> inputElements = searchBox.findElements(By.tagName("input"));
@@ -149,7 +168,7 @@ public class Shopping {
 			  String currentWindow = driver.getWindowHandle();  			  
 			  WebElement wlBtn = driver.findElement(By.id("add-to-wishlist-button-submit"));			  
 			  wlBtn.click();
-			  Timer.waitSeconds(15);
+			  Timer.waitSeconds(10);
 			  
 			  return driver;
 			 }					
@@ -160,7 +179,7 @@ public class Shopping {
 			  searchInput.clear();			  
 			  Timer.waitSeconds(5);
 			  searchInput.sendKeys(itemAsin);
-			  Timer.waitSeconds(15);
+			  Timer.waitSeconds(10);
 			  
 			  WebElement searchBox = driver.findElement(By.id("nav-search"));
 			  List<WebElement> inputElements = searchBox.findElements(By.tagName("input"));
@@ -209,7 +228,7 @@ public class Shopping {
 			  WebElement wlBtn = driver.findElement(By.id("add-to-cart-button"));
 			  
 			  wlBtn.click();
-			  Timer.waitSeconds(15);
+			  Timer.waitSeconds(10);
 			  
 			  return driver;
 			 }	
@@ -235,11 +254,42 @@ public class Shopping {
 			  
 			  // Select radio-button
 			  
-			  WebElement radioBtn = driver.findElement(By.id("WLNEW_list_type_WL"));
-			  WebElement radioWL = radioBtn.findElement(By.tagName("i"));
-			  System.out.println("numbe  = " + radioWL);
+			  driver.findElement(By.id("WLNEW_list_type_WL")).sendKeys("value", "checked");
 			  
-			   radioWL.click();
+//			  List<WebElement> labelElements = driver.findElements(By.tagName("label"));
+//			  for (WebElement labElement : labelElements) {
+//				  WebElement labInput = null;
+//				  labInput = labElement.findElement(By.id("WLNEW_list_type_WL"));
+//				  labInput.setAttribute("value", "cvh");
+//				  if (labInput != null) {
+//					  WebElement labClick = labElement.findElement(By.tagName("i"));
+//					  String labn = labClick.getAttribute("class");
+//					  System.out.println(labn);
+//					  
+//					  labClick.click();
+//					    break;
+//				  }
+//			  }
+				  
+//				  WebElement labInput = labElement.findElement(By.tagName("i"));
+//				  if(labElement.getAttribute("i").contains("a-icon a-icon-radio")) {
+//					  String labn = labElement.getAttribute("class");
+//					  System.out.println(labn);
+//					    labElement.click();
+//					    break;
+//					   }
+			
+			  
+			  
+//			  WebElement radioBtn = driver.findElement(By.id("WLNEW_list_type_WL"));
+//			  if (!(radioBtn.isSelected()))
+					  
+				  
+  
+//			  WebElement radioWL = radioBtn.findElement(By.tagName("i"));
+//			  System.out.println("numbe  = " + radioWL);
+			  
+//			   radioBtn.click();
 			   Timer.waitSeconds(10);
 			  
 			  // Submit Create List
@@ -247,7 +297,7 @@ public class Shopping {
 			  List<WebElement> inputElements = driver.findElements(By.tagName("input"));
 			  
 			  for (WebElement inputElement : inputElements) {
-				   if(inputElement.getAttribute("data-action").equals("reg-create-submit")) {
+				   if(inputElement.getAttribute("data-action").contains("reg-create-submit")) {
 				    inputElement.submit();
 				    break;
 				   }

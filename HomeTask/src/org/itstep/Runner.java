@@ -22,7 +22,7 @@ public class Runner {
 		Shopping aquarium = new Shopping();	
 		WebDriver driver = aquarium.loginAmazonAccount(acc);
 		Timer.waitSeconds(10);
-		driver = aquarium.createWL(driver);
+		driver = aquarium.createWishList(driver);
 		
 		*/
 		

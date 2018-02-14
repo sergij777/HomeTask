@@ -5,44 +5,46 @@ import static org.junit.Assert.*;
 import org.itstep.dao.AccountDAO;
 import org.itstep.dao.ActionDAO;
 import org.itstep.model.Account;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.itstep.service.Timer;
 public class ShoppingTest {
-	
-	
+		
 	Account acc;
 	AccountDAO accountDao;
+	ActionDAO actionDao;
+	Shopping aquarium;
+	WebDriver driver;
 	
 	@Before
 	public void setData() {
-		acc = new Account();
+		acc = new Account("serg_sava@ukr.net", "Lomonosova58", "Serg", "Sava");
 		accountDao = new AccountDAO();
-		
-	}
+		actionDao = new ActionDAO();
+		aquarium = new Shopping();	
+	}	
 
-
-	
-	
 	@Test
-	public void testAddItemToWL() {
-		Account acc = new Account();
-		AccountDAO accountDao = new AccountDAO();
-		acc = accountDao.getAccount("serg_sava@ukr.net");	
-		ActionDAO actionDao = new ActionDAO();
-		Shopping aquarium = new Shopping();									
+	public void testAddItemToWL() {											
 		WebDriver driver = aquarium.loginAmazonAccount(acc);		
 		Timer.waitSeconds(10);
-		
+		driver = aquarium.addItemToWL(driver, "B07125LC1Y");
+		Timer.waitSeconds(10);
+		assertTrue(driver.getPageSource().contains("B07125LC1Y"));		
+		Timer.waitSeconds(5);
+		driver.quit();
 	}
 
 	@Test
-	public void testAddItemToCart() {
-		
+		public void testAddItemToCart() {
+		WebDriver driver = aquarium.loginAmazonAccount(acc);		
+		Timer.waitSeconds(10);
+		driver = aquarium.addItemToCart(driver, "B075KFBDSJ");
+		Timer.waitSeconds(10);
+		assertTrue(driver.getPageSource().contains("B075KFBDSJ"));	
+		Timer.waitSeconds(5);
+		driver.quit();
 	}
-
-	
-	// driver = imitator.addItemToWL(driver, "B077N43PST");		
-	//assertTrue(driver.getPageSource().contains(""));
 }
