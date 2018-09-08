@@ -14,16 +14,16 @@ public class Shopping {
 	 private static final String USER_DIR = System.getProperty("user.dir");
 	 
 	 private static final String DRIVER_PATH = USER_DIR + SEPARATOR + "lib" + SEPARATOR + "chromedriver.exe";
-	 
+	 	 
 	 private static final String BASE_URL = "https://www.amazon.com";
 
-	 public static WebDriver getWebDriver() {
+	 public static WebDriver getWebDriver() {		 
 	  
-	  System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
+		 System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
 	  
-	  WebDriver driver = new ChromeDriver();	  
+		 WebDriver driver = new ChromeDriver();	  
 	  
-	  return driver;
+		 return driver;
 	 }
 	 
 		public WebDriver registerAmazonAccount(Account account) {
@@ -61,13 +61,12 @@ public class Shopping {
 			  Timer.waitSeconds(20);
 
 			  return driver;
-			 }
-	 
+		}	 
 	 
 		public WebDriver loginAmazonAccount(Account account) {
 			  WebDriver driver = getWebDriver();
 			  
-			  Timer.waitSeconds(3);
+			  Timer.waitSeconds(5);
 			  driver.get(BASE_URL);
 			  Timer.waitSeconds(5);
 			  
@@ -81,6 +80,7 @@ public class Shopping {
 			  driver.get(loginLink);
 			  Timer.waitSeconds(10);
 			  
+			  //if the page contains fields "email" and "password"
 			  if (driver.getPageSource().contains("ap_password")) {
 			  
 			  WebElement emailElement = driver.findElement(By.id("ap_email"));
@@ -92,6 +92,8 @@ public class Shopping {
 			  submitElement.submit();	
 			  
 			  }
+			  //if the page contains only field "email" 
+			  //but field "password" will be on the next page
 			  else {
 				  WebElement emailElement = driver.findElement(By.id("ap_email"));
 				  WebElement submitElement1 = driver.findElement(By.id("continue"));
@@ -114,7 +116,7 @@ public class Shopping {
 			  driver.get(currentPage);
 			  Timer.waitSeconds(5);
 			  return driver;
-			 }
+		}
 
 		public WebDriver addItemToWL(WebDriver driver, String itemAsin) {
 			  
@@ -171,7 +173,7 @@ public class Shopping {
 			  Timer.waitSeconds(10);
 			  
 			  return driver;
-			 }					
+		}					
 		
 		public WebDriver addItemToCart(WebDriver driver, String itemAsin) {
 			  
@@ -231,147 +233,5 @@ public class Shopping {
 			  Timer.waitSeconds(10);
 			  
 			  return driver;
-			 }	
-		
-		public WebDriver createWishList(WebDriver driver) {
-
-			  WebElement navBlock = driver.findElement(By.id("nav-al-wishlist"));  			  
-			  List<WebElement> shopList = navBlock.findElements(By.tagName("a"));
-			  			  
-			  String createWishListLink = "";
-			  for (WebElement shopElement : shopList) {
-				  if (createWishListLink != "") break;
-				  if (shopElement.getAttribute("href").contains("wishlist_create")) {
-					  createWishListLink = shopElement.getAttribute("href");
-				  }				
-			}
-			  driver.get(createWishListLink);
-			  Timer.waitSeconds(15);
-			  
-			  WebElement crWLBtn = driver.findElement(By.id("createList-announce"));			  
-			  crWLBtn.click();
-			  Timer.waitSeconds(15);
-			  
-			  // Select radio-button
-			  
-			  driver.findElement(By.id("WLNEW_list_type_WL")).sendKeys("value", "checked");
-			  
-//			  List<WebElement> labelElements = driver.findElements(By.tagName("label"));
-//			  for (WebElement labElement : labelElements) {
-//				  WebElement labInput = null;
-//				  labInput = labElement.findElement(By.id("WLNEW_list_type_WL"));
-//				  labInput.setAttribute("value", "cvh");
-//				  if (labInput != null) {
-//					  WebElement labClick = labElement.findElement(By.tagName("i"));
-//					  String labn = labClick.getAttribute("class");
-//					  System.out.println(labn);
-//					  
-//					  labClick.click();
-//					    break;
-//				  }
-//			  }
-				  
-//				  WebElement labInput = labElement.findElement(By.tagName("i"));
-//				  if(labElement.getAttribute("i").contains("a-icon a-icon-radio")) {
-//					  String labn = labElement.getAttribute("class");
-//					  System.out.println(labn);
-//					    labElement.click();
-//					    break;
-//					   }
-			
-			  
-			  
-//			  WebElement radioBtn = driver.findElement(By.id("WLNEW_list_type_WL"));
-//			  if (!(radioBtn.isSelected()))
-					  
-				  
-  
-//			  WebElement radioWL = radioBtn.findElement(By.tagName("i"));
-//			  System.out.println("numbe  = " + radioWL);
-			  
-//			   radioBtn.click();
-			   Timer.waitSeconds(10);
-			  
-			  // Submit Create List
-			  
-			  List<WebElement> inputElements = driver.findElements(By.tagName("input"));
-			  
-			  for (WebElement inputElement : inputElements) {
-				   if(inputElement.getAttribute("data-action").contains("reg-create-submit")) {
-				    inputElement.submit();
-				    break;
-				   }
-				  }
-			  
-			  
-			  
-			  ///////////////////////////////////
-			  
-//			  List<WebElement> oCheckBox = driver.findElements(By.name("listType"));
-//			  int iSize = oCheckBox.size();
-//			  System.out.println("total " + iSize);
-//			  
-//			  for(int i=0; i < iSize ; i++ ){
-//				  
-//					 // Store the checkbox name to the string variable, using 'Value' attribute
-//				  WebElement radioBtn = oCheckBox.get(i).findElement(By.id("WLNEW_list_type_WL"));
-//				  if (radioBtn != null)   {
-//				  
-//		//			 String sValue = oCheckBox.get(i).getAttribute("WLNEW_list_type_WL");
-//					 System.out.println("numbe " + i +" = " + radioBtn);
-//				 
-//					 // Select the checkbox it the value of the checkbox is same what you are looking for
-//				 
-//					// if (sValue.equalsIgnoreCase("toolsqa")){
-//				  //	 	if (sValue != null)  {
-//						 oCheckBox.get(i).click();
-//				 
-//						 // This will take the execution out of for loop
-//				 
-//						 break;
-//				 
-//						 }
-//				 
-//					}
-			  
-			  
-//			  for (WebElement labelElement : radioList) {
-//				  WebElement radioBtn = labelElement.findElement(By.id("WLNEW_list_type_WL"));
-//				  if (radioBtn != null) {
-//					  labelElement.click();
-//					  break;
-//				  }
-//				
-//			}
-			  
-//			  WebElement radioBtn = radioBlock.findElement(By.name("label"));         //getAttribute("class").contains("a-icon a-icon-radio");
-//			  radioBtn.click();
-			  Timer.waitSeconds(15);
-			  
-//			  
-//			  WebElement shopBlock = navBlock.getAttribute("class").contains("nav-panel");
-//			  
-//			  WebElement shopBlock = navBlock.findElement(By.class("nav-panel"));
-//			  
-//			//  WebElement registerLinkElement = registerBlock.findElement(By.tagName("a"));
-//
-//			  String registerLink = registerLinkElement.getAttribute("href");
-//
-//			  driver.get(registerLink);
-//			  Timer.waitSeconds(25);
-//
-//			  WebElement crWLBtn = driver.findElement(By.id("createList-announce"));
-//			  crWLBtn.click();
-//			  
-			  
-//			  WebElement registerLinkElement = registerBlock.findElement(By.tagName("a"));
-//
-//			  String registerLink = registerLinkElement.getAttribute("href");
-//			  driver.get(registerLink);
-			  
-			  Timer.waitSeconds(60);
-			  
-			  return driver;
-			  
-		}		
+		}				
 }
